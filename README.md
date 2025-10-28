@@ -4,6 +4,8 @@
 
 SSR은 서버에서 완성한 HTML을 브라우저에 전달하고, 브라우저에서 인터렉션 요소를 붙여 앱을 완성하는 방식이다. `<App />`을 SSR로 표시한다고 가정해보자. 같은 App을 전달하지만 서버와 브라우저의 처리 방식은 다르다. 서버는 App을 정적인 HTML 형태로 만든다. 브라우저는 App의 정보를 가지고 이미 정적인 HTML 형태에 상호작용 요소를 추가한다.
 
+![server-browser](images/server-browser.png)
+
 리액트에선 SSR을 지원하기 위해 renderToString라는 함수가 있다. renderToString은 서버 입장에서 App을 처리하기 위해 사용하는 함수로, ReactNode로 선언된 App을 string 형태의 HTML으로 만든다. 이렇게만 보면 renderToString이 ReactNode를 전송하게 좋은 형태인 string으로 바꾸는 함수구나~ 하고 넘어갈 수 있다. **하지만 ReactNode의 모든 정보를 HTML로 전송하고 있을까?** 실제로 ReactNode를 renderToString에 넣으면 모든 기능이 HTML로 변환되지 않는다.
 
 그렇다면 renderToString은 string 형태의 HTML을 만들기 위해 App의 정보 중 어떤 것을 거를까?
@@ -38,6 +40,8 @@ renderToString은 직렬화를 할 수 없는 속성값은 HTML로 변환하지 
 <button onClick={() => {}}>1. 직렬화를 할 수 없는 요소</button>
 ```
 
+![step1](images/step1.png)
+
 ### DOM이 필요한 동작
 
 DOM을 필요로 하는 동작의 경우 HTML 요소에 포함되지 않는다. 서버는 DOM을 알지 못하기 때문에 DOM이 필요한 동작은 거른다.
@@ -55,6 +59,8 @@ function App() {
   );
 }
 ```
+
+![step2-1](images/step2-1.png)
 
 useEffect라는 훅을 들었기 때문에 헷갈릴 수 있는게, renderToString은 HTML 요소에 포함되는 모든 리액트 훅을 지우지 않는다는 점이다. 훅의 내용 중 직렬화가 가능하고 HTML에 영향을 미칠 수 있는 요소는 반영할 수 있다.
 
@@ -74,9 +80,13 @@ function App() {
 }
 ```
 
+![step2-2](images/step2-2.png)
+
 ### Suspense의 동작
 
 Suspense는 자식 요소가 로드되기 전까지 대체 UI를 보여주는 컴포넌트이다. 하지만 renderToString은 동기적으로 ReactNode를 변환하기 때문에 만약 자식 요소가 비동기적으로 로드될 여지가 있다면 무조건 fallback UI를 반환한다. 이처럼 리액트의 renderToString은 Suspense를 지원하지 않기 때문에 만약 Suspense를 이용한 App을 renderToString으로 감쌀 경우 다음과 같은 오류 메시지가 출력된다.
+
+![step3](images/step3.png)
 
 ## 정리
 
