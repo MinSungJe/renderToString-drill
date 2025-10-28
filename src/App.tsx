@@ -5,11 +5,13 @@ function App() {
   const [count, setCount] = useState(0);
 
   return (
-    <div>
-      <p>renderToString 확인용 카운터</p>
-      <p>{count}</p>
-      <button onClick={() => setCount((prev) => prev + 1)} />
-    </div>
+    <>
+      <div>
+        <p>renderToString 확인용 카운터</p>
+        <p>{count}</p>
+        <button onClick={() => setCount((prev) => prev + 1)}>추가</button>
+      </div>
+    </>
   );
 }
 
