@@ -1,73 +1,9 @@
-# React + TypeScript + Vite
+# 📌 renderToString 송곳
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 개요
 
-Currently, two official plugins are available:
+SSR은 서버에서 완성한 HTML을 브라우저에 전달하고, 브라우저에서 인터렉션 요소를 붙여 앱을 완성하는 방식이다. `<App />`을 SSR로 표시한다고 가정해보자. 같은 App을 전달하지만 서버와 브라우저의 처리 방식은 다르다. 서버는 App을 정적인 HTML 형태로 만든다. 브라우저는 App의 정보를 가지고 이미 정적인 HTML 형태에 상호작용 요소를 추가한다.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+리액트에선 SSR을 지원하기 위해 renderToString라는 함수가 있다. renderToString은 서버 입장에서 App을 처리하기 위해 사용하는 함수로, ReactNode로 선언된 App을 string 형태의 HTML으로 만든다. 이렇게만 보면 renderToString이 ReactNode를 전송하게 좋은 형태인 string으로 바꾸는 함수구나~ 하고 넘어갈 수 있다. **하지만 ReactNode의 모든 정보를 HTML로 전송하고 있을까?** 실제로 ReactNode를 renderToString에 넣으면 모든 기능이 HTML로 변환되지 않는다.
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+그렇다면 renderToString은 string 형태의 HTML을 만들기 위해 App의 정보 중 어떤 것을 거를까?
