@@ -102,3 +102,7 @@ Suspense는 자식 요소가 로드되기 전까지 대체 UI를 보여주는 �
 renderToString은 서버에서 App을 HTML 형태의 string으로 변환해주는 함수이다. **하지만 renderToString이 모든 HTML 요소를 string으로 변환해주지 않는다. 이벤트 핸들러, DOM이 필요한 동작, Suspense의 동작은 반환한 HTML 내에 담겨있지 않다.**
 
 서버에선 요소의 DOM을 만들 수 있는 기본적인 구조도를 전달해준다. 이후 이 구조도가 동작하도록 하는 역할은 클라이언트단에서 수행하는데, 이것이 우리가 아는 hydration 과정이다.
+
+## 노트
+
+![note](images/note.png)
